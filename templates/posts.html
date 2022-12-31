@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+
+{% block title %} Статьи {% endblock %}
+
+{% block body%} 
+<div class="container mt-5">
+<h1 style="color: antiquewhite; margin: 15px; display: flex; justify-content: center; align-items: center;"> Все статьи </h1>
+{% if articles|length > 0 %}
+    {% for el in articles %}
+        <div class="posts">
+            <h2><b>{{ el.title }}</b></h2>
+            <p>{{ el.intro }}</p>
+            <p><b>{{ el.date.date() }}</b></p>
+            <a class="btn btn-success" href="/posts/{{ el.id }}">Детальнее</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Статей нет</p>
+{% endif %}
+</div>
+{% endblock %}

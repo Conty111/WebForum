@@ -1,0 +1,15 @@
+{% extends 'template.html' %}
+
+{% block title %} {{ articles.title }} {% endblock %}
+
+{% block body%} 
+<div class="container mt-5">
+<h1 style="color:antiquewhite"> <b>{{ articles.title }}</b> </h1>
+    <div class="post">
+        <p style="margin: 15px; word-wrap: break-word;"><b>{{ articles.text }}</b></p>
+        <p><b>{{ articles.date.date() }}</b></p>
+        <a class="btn btn-danger" href="/posts/{{ articles.id }}/delete">Удалить</a>
+        <a class="btn btn-success" href="/posts/{{ articles.id }}/update">Редактировать</a>
+    </div>
+</div>
+{% endblock %}

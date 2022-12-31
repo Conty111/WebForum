@@ -1,0 +1,15 @@
+{% extends 'template.html' %}
+
+{% block title %}Create Article{% endblock %}
+
+{% block body%} 
+<div class="container mt-5">
+    <h1 style="color: antiquewhite; justify-content: center; align-items: center; text-align: center;">Добавление статьи</h1>
+    <form method="post" style="width: 70%; margin-left: 15%; margin-top: 15px;">
+        <input type="text" name="title" id="title" class="form-control" placeholder="Введите заголовок статьи"><br>
+        <textarea name="intro" id="intro" class="form-control"  placeholder="Анонс статьи"></textarea><br>
+        <textarea name="text" id="text" class="form-control"  placeholder="Введите текст статьи"></textarea><br>
+        <input type="submit" class="btn btn-success" value="Отправить">
+    </form>
+</div>
+{% endblock %}
