@@ -1,0 +1,22 @@
+{% extends 'template.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block body%} 
+<div class="container mt-5">
+    <h1 style="color: antiquewhite; justify-content: center; align-items: center; text-align: center;">Регистрация</h1>
+    <form method="post" style="width: 70%; margin-left: 15%; margin-top: 15px;">
+        <p>Введите ваше имя</p>
+        <input type="text" name="username" id="username" class="form-control" placeholder="Иван"><br>
+        <p>Придумайте ваш логин для входа в систему</p>
+        <input type="text" name="user_login" id="user_login" class="form-control" placeholder="Ivan777"><br>
+        <p>Введите ваш e-mail</p>
+        <input type="email" name="email" id="email" class="form-control" placeholder="ivan129@gmail.com"><br>
+        <p>Придумайте пароль</p>
+        <input type="password" name="password" id="password" class="form-control"  placeholder="Ваш пароль"><br>
+        <p>Подтвердите пароль</p>
+        <input type="password" name="password_second" id="password_second" class="form-control"  placeholder="Ваш пароль"><br>
+        <input type="submit" class="btn btn-success" value="Зарегистрироваться">
+    </form>
+</div>
+{% endblock %}
