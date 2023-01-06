@@ -1,0 +1,15 @@
+{% extends 'template.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body%} 
+<div class="container mt-5 purple" style="color: antiquewhite; padding: 25px; border-radius: 15px;">
+    <h2>Your profile</h2>
+    <ul style="font-size: larger; margin-top: 15px;">
+        <li><b> Username: </b>{{ current_user.username }}</li>
+        <li><b> Email: </b>{{ current_user.email }}</li>
+        <li><b> Created on: </b>{{ current_user.created_on }}</li>
+        <li><b> Updated on: </b>{{ current_user.updated_on }}</li>
+    </ul>
+</div>
+{% endblock %}

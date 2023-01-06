@@ -41,3 +41,36 @@ body{
     width: 70%;
     margin-left: 15%;
 }
+.form_box{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 15px;
+    
+    margin-top: 15px;
+    padding: 50px;
+
+    color: antiquewhite;
+    font-size: larger;
+}
+.form_box_element{
+    padding: 10px;
+}
+.flash{
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    width: 30%;
+    margin-left: 35%;
+
+    font-size: large;
+    color: antiquewhite;
+}
+.success{
+    background-color: green;
+}
+.error{
+    background-color: brown;
+}

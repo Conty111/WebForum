@@ -1,0 +1,44 @@
+{% extends 'template.html' %}
+
+
+{% block title %}Log in{% endblock %}
+
+{% block body%}
+
+    
+
+    <div class="purple form_box">
+        <h1 style="text-align: center; padding-bottom: 10px;">Авторизация</h1>
+        <form action="" method="post">
+        {{ form.csrf_token }}
+        <p class="form_box_element">
+            {{ form.username.label() }}
+            {{ form.username() }}
+            {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                {{ error }}
+            {% endfor %}
+            {% endif %}
+        </p>
+        <p class="form_box_element">
+            {{ form.password.label() }}
+            {{ form.password() }}
+            {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                {{ error }}
+            {% endfor %}
+            {% endif %}
+        </p>
+        <p class="form_box_element">
+            {{ form.remember.label() }}
+            {{ form.remember() }}
+        </p>
+        <p class="form_box_element" style="display: flex; align-items: center; text-align: center; justify-content: center;">
+            <input type="submit" class="btn btn-success" value="Авторизоваться" style="font-size: large;">
+        </p>
+        </form>
+        {% for category, message in  get_flashed_messages(with_categories=true) %}
+            <div class="{{ category }} flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

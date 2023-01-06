@@ -5,18 +5,25 @@
 {% block body%} 
 <div class="container mt-5">
     <h1 style="color: antiquewhite; justify-content: center; align-items: center; text-align: center;">Регистрация</h1>
-    <form method="post" style="width: 70%; margin-left: 15%; margin-top: 15px;">
+    <form method="post" style="width: 70%; margin-left: 15%; margin-top: 15px; color: antiquewhite;">
         <p>Введите ваше имя</p>
-        <input type="text" name="username" id="username" class="form-control" placeholder="Иван"><br>
+        <input type="text" name="name" id="name" class="form-control" placeholder="Иван"><br>
+
         <p>Придумайте ваш логин для входа в систему</p>
-        <input type="text" name="user_login" id="user_login" class="form-control" placeholder="Ivan777"><br>
+        <input type="text" name="username" id="username" class="form-control" placeholder="Ivan777"><br>
+
         <p>Введите ваш e-mail</p>
         <input type="email" name="email" id="email" class="form-control" placeholder="ivan129@gmail.com"><br>
+
         <p>Придумайте пароль</p>
         <input type="password" name="password" id="password" class="form-control"  placeholder="Ваш пароль"><br>
+        
         <p>Подтвердите пароль</p>
         <input type="password" name="password_second" id="password_second" class="form-control"  placeholder="Ваш пароль"><br>
         <input type="submit" class="btn btn-success" value="Зарегистрироваться">
     </form>
+    {% for category, message in  get_flashed_messages(with_categories=true) %}
+            <div class="{{ category }} flash" style="width: 40%; margin-left: 30%; margin-bottom: 10%;">{{ message }}</div>
+    {% endfor %}
 </div>
 {% endblock %}

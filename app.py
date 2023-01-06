@@ -1,10 +1,14 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, make_response, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, UserMixin, current_user
+from flask_login import LoginManager, UserMixin, current_user, login_required, login_user
+
+from forms import LoginForm
 from datetime import datetime
 from config import Config
 from werkzeug.security import generate_password_hash,  check_password_hash
+
+
 
 
 def create_app():
@@ -20,6 +24,11 @@ app = create_app()
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -30,6 +39,11 @@ class Article(db.Model):
 
     def  __repr__(self):
         return '<Article %r>' % self.id
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.query(User).get(user_id)
 
 
 class User(db.Model, UserMixin):
@@ -52,9 +66,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.query(User).get(user_id)
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -89,6 +101,7 @@ def post_details(id):
 
 
 @app.route('/posts/<int:id>/delete', methods = ['GET', 'POST'])
+@login_required
 def post_delete(id):
     articles = Article.query.get_or_404(id)
 
@@ -101,6 +114,7 @@ def post_delete(id):
 
 
 @app.route('/posts/<int:id>/update', methods = ['GET', 'POST'])
+@login_required
 def post_update(id):
     articles = Article.query.get_or_404(id)
     if request.method == 'POST':
@@ -119,6 +133,7 @@ def post_update(id):
 
 
 @app.route('/create_article', methods = ['GET', 'POST'])
+@login_required
 def create_article():
     if request.method == "POST":
         title = request.form['title']
@@ -126,55 +141,71 @@ def create_article():
         text = request.form['text']
 
         article = Article(title=title, intro=intro, text=text)
-
-        try:
-            db.session.add(article)
-            db.session.commit()
-            return redirect('/home')
-        except:
-            return 'Error'
+        if len(title) > 2 and len(intro) > 10 and len(text) > 15:
+            try:
+                db.session.add(article)
+                db.session.commit()
+                flash("Creating was successfull!", "success")
+                return render_template("create_article.html")
+            except:
+                flash("An error occurred during creating. Please try again", "error")
+                return render_template("create_article.html")
+        else:
+            flash("The article should contain more characters", "error")
+            return render_template("create_article.html")
     else:
         return render_template("create_article.html")
 
-
-@app.route('/profile')
-def profile(id):
-    user = User.query.get(id)
-    return render_template("profile.html", user=user)
-
-
-@app.route('/sign-up', methods = ['GET', 'POST'])
-def create_account():
+@app.route('/sign_up', methods=['post', 'get'])
+def sign_up():
     if request.method == "POST":
-        name = request.form.get('username')
-        password = request.form.get('password')
-        username = request.form.get('user_login')
-        email = request.form.get('email')
-        password_hash = generate_password_hash(password)
-        
-        user = User(name=username, username=username, email=email)
-        user.set_password(password)
+        name = request.form['name']
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
 
-        try:
-            db.session.add(user)
-            db.session.commit()
-            return redirect('/home')
-        except:
-            return "Error with db.commit()"
+        user = User(name=name, username=username, email=email)
+        user.set_password(password)
+        
+        if (user.username,) not in db.session.query(User.username).all() and (user.email,) not in db.session.query(User.email).all():
+            try:
+                db.session.add(user)
+                db.session.commit()
+                return redirect('/login')
+            except:
+                flash("An error occurred during registration. Perhaps such a login is already in use", "error")
+                return render_template("sign_up.html")
+        else:
+            flash("A user with this username or email already exists", "error")
+            return render_template("sign_up.html")
     else:
         return render_template("sign_up.html")
 
 
-# @app.route('/sign-p', methods = ['GET', 'POST'])
-# def create_account():
-#     if request.method == "POST":
-#         user_login = request.form.get('user_login')
-#         password = request.form.get('password')
-#         remember = request.form.get('remember')
-        
-#     else:
-#         return render_template("sign_up.html")
 
+@app.route('/login/', methods=['post',  'get'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db.session.query(User).filter(User.username == form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            return redirect(url_for('admin'))
+
+        flash("Invalid username/password", 'error')
+        return redirect(url_for('login'))
+    return render_template('login.html', form=form)
+
+
+@app.route('/profile/')
+@login_required
+def admin():
+    return render_template('profile.html')
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
