@@ -22,11 +22,16 @@
             <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"> -->
               <!-- <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search"> -->
             <!-- </form> -->
-    
-            <div class="text-end">
-              <a type="button" class="shadow btn btn-outline-light me-2" href="/login">Login</a>
-              <a type="button" class="shadow btn btn-light" href="/sign_up">Sign-up</a>
-            </div>
+            {% if current_user.is_authenticated %}
+              <div class="profile_menu">
+                <a href="/profile" type="button" class="btn-purple-outline"><b>Profile</b></a>
+              </div>
+            {% else %}
+              <div class="text-end">
+                <a type="button" class="shadow btn btn-outline-light me-2" href="/login">Login</a>
+                <a type="button" class="shadow btn btn-light" href="/sign_up">Sign-up</a>
+              </div>
+            {% endif %}
           </div>
         </div>
       </header>
