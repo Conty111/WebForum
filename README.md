@@ -33,7 +33,7 @@
     
         pip install -r requirements.txt
 
- 2. Создать файл базы данных sqlite в папке database (находясь в директории репозитория)
+ 2. Создать файл базы данных sqlite3 в папке database (находясь в директории репозитория)
  
         mkdir database
         touch data.db
