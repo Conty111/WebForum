@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, UserMixin, login_required, login_user
+from os import environ
 
 from forms import LoginForm
 from datetime import datetime
@@ -209,4 +210,5 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
