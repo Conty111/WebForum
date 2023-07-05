@@ -22,6 +22,7 @@
         <input type="password" name="password_second" id="password_second" class="form-control"  placeholder="Ваш пароль"><br>
         <input type="submit" class="btn btn-success" value="Зарегистрироваться">
     </form>
+    
     {% for category, message in  get_flashed_messages(with_categories=true) %}
             <div class="{{ category }} flash" style="width: 40%; margin-left: 30%; margin-bottom: 10%;">{{ message }}</div>
     {% endfor %}

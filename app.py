@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect, make_response, flash
+from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, UserMixin, current_user, login_required, login_user
+from flask_login import LoginManager, UserMixin, login_required, login_user
 
 from forms import LoginForm
 from datetime import datetime
@@ -64,7 +64,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self,  password):
         return check_password_hash(self.password_hash, password)
-
 
 
 
@@ -156,6 +155,7 @@ def create_article():
     else:
         return render_template("create_article.html")
 
+
 @app.route('/sign_up', methods=['post', 'get'])
 def sign_up():
     if request.method == "POST":
@@ -191,7 +191,7 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             return redirect(url_for('admin'))
-
+    
         flash("Invalid username/password", 'error')
         return redirect(url_for('login'))
     return render_template('login.html', form=form)
@@ -207,7 +207,6 @@ def admin():
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
-print(current_user)
 
 if __name__ == "__main__":
     app.run(debug=True)
