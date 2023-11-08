@@ -1,6 +1,6 @@
 # Readme file
 
-## Flask web-site
+## WebForum
 
 ### Структура проекта
 ```
